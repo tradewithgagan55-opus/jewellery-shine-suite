@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import "../lib/dev-auto-reload";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -77,23 +78,53 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "CheluveCreations" },
+      { name: "description", content: "Cheluve Creations offers elegant, handcrafted ornament collections that blend tradition and style, creating timeless pieces for every occasion." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "CheluveCreations" },
+      { property: "og:description", content: "Cheluve Creations offers elegant, handcrafted ornament collections that blend tradition and style, creating timeless pieces for every occasion." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "CheluveCreations" },
+      { name: "twitter:description", content: "Cheluve Creations offers elegant, handcrafted ornament collections that blend tradition and style, creating timeless pieces for every occasion." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4KdeDQhIB4aXKlPyZWaZq8f6Qxp2/social-images/social-1782560392980-logo_2.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4KdeDQhIB4aXKlPyZWaZq8f6Qxp2/social-images/social-1782560392980-logo_2.webp" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Cheluve Creations",
+          url: "https://cheluvecreations.lovable.app",
+          logo: "https://cheluvecreations.lovable.app/favicon.ico",
+          description: "Premium antique ornament sales and rentals — heirloom bridal jewelry, temple sets and curated collections.",
+          sameAs: [],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Cheluve Creations",
+          url: "https://cheluvecreations.lovable.app",
+        }),
+      },
     ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
