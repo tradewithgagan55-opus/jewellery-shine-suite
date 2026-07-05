@@ -30,8 +30,7 @@ export function WhatsAppFAB() {
   );
 }
 
-import logoAsset from "@/assets/cheluve-logo.png.asset.json";
-const logo = logoAsset.url;
+const logo = "/images/cheluve-logo.png";
 import img05 from "@/assets/jewelry/IMG-20260606-WA0005.jpg";
 import img06 from "@/assets/jewelry/IMG-20260606-WA0006.jpg";
 import img07 from "@/assets/jewelry/IMG-20260606-WA0007.jpg";
