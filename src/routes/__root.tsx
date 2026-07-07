@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Cheluve Creations",
-          url: "https://cheluvecreations.lovable.app",
+          url: "https://cheluve-revive.lovable.app",
           logo: "https://cheluvecreations.lovable.app/favicon.ico",
           description: "Premium antique ornament sales and rentals — heirloom bridal jewelry, temple sets and curated collections.",
           sameAs: [],
