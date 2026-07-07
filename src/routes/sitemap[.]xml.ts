@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 
-const BASE_URL = "https://cheluve-revive.lovable.app";
+const BASE_URL = "https://cheluvecreations.co.in";
 
 interface SitemapEntry {
   path: string;

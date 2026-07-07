@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cheluve-revive.lovable.app/sitemap.xml
+Sitemap: https://cheluvecreations.co.in/sitemap.xml
