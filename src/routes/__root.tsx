@@ -119,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Cheluve Creations",
-          url: "https://cheluvecreations.lovable.app",
+          url: "https://cheluve-revive.lovable.app",
         }),
       },
     ],
