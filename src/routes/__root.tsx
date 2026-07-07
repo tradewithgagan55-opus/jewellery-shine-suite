@@ -90,7 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:description", content: "Premium antique ornament sales & rentals — heirloom bridal jewelry, temple sets and curated collections for every Cheluve." },
       { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4KdeDQhIB4aXKlPyZWaZq8f6Qxp2/social-images/social-1782560392980-logo_2.webp" },
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/4KdeDQhIB4aXKlPyZWaZq8f6Qxp2/social-images/social-1782560392980-logo_2.webp" },
-      { name: "google-site-verification", content: "NmDCYEreWGaAn1X3qtrPV00K6C1JmjEExxpqmFPBN5c" },
+      { name: "google-site-verification", content: "WUPscOkvinJt8CV4xPmLbcsZyVr2TdqvB10v1SAqwfI" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
