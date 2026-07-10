@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { useProduct, formatPrice } from "@/lib/products-api";
 import { Navbar } from "@/components/cheluve/Navbar";
-import { WhatsAppFAB, GoldButton, Eyebrow, WHATSAPP_NUMBER } from "@/components/cheluve/primitives";
+import { WhatsAppFAB, Eyebrow, WHATSAPP_NUMBER } from "@/components/cheluve/primitives";
 import { Footer } from "@/components/cheluve/Sections";
 
 export const Route = createFileRoute("/product/$slug")({
