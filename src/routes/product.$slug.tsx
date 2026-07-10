@@ -126,9 +126,15 @@ function ProductDetail() {
             )}
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <GoldButton as="a" href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`} target="_blank" rel="noreferrer">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3 text-[11px] tracking-[0.3em] uppercase text-white transition-all duration-300 hover:-translate-y-0.5"
+                style={{ background: "linear-gradient(135deg, #D4AF37 0%, #B8860B 100%)", boxShadow: "0 12px 30px -12px rgba(184,134,11,0.55)" }}
+              >
                 <MessageCircle className="w-4 h-4" /> Enquire on WhatsApp
-              </GoldButton>
+              </a>
               <Link
                 to="/"
                 hash="contact"
