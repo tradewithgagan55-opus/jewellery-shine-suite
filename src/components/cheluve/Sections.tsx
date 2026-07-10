@@ -9,7 +9,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { products, formatPrice } from "./products";
+import { useProducts, formatPrice, type ProductRow } from "@/lib/products-api";
+import { Link } from "@tanstack/react-router";
 
 
 
@@ -147,6 +148,8 @@ function LotusSVG() {
 
 /* ===== COLLECTIONS ===== */
 export function Collections() {
+  const { data: products = [], isLoading } = useProducts();
+
   const items = [
     { title: "Antique Necklaces", desc: "Heirloom-grade temple necklaces in classic gold tones.", img: allJewelry[1] },
     { title: "Temple Jewelry", desc: "Divine craftsmanship inspired by South Indian temples.", img: allJewelry[9] },
@@ -155,6 +158,7 @@ export function Collections() {
     { title: "Bangles & Bracelets", desc: "Intricate kada, bangles & ornamental bracelets.", img: allJewelry[15] },
     { title: "Wedding Collections", desc: "Curated sets crafted for cherished ceremonies.", img: allJewelry[4] },
   ];
+
   return (
     <section id="collections" className="relative py-28 bg-[color:var(--ivory)]">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -185,13 +189,10 @@ export function Collections() {
                     <span className="h-px w-10 bg-[color:var(--gold)] transition-all duration-500 group-hover:w-16" />
                   </div>
                 </div>
-                {/* glow */}
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" style={{ boxShadow: "inset 0 0 60px rgba(212,175,55,0.18)" }} />
               </a>
-
             </Reveal>
           ))}
-
         </div>
 
         {/* ===== Product Grid ===== */}
@@ -204,50 +205,58 @@ export function Collections() {
           </Reveal>
 
           <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {products.map((p, i) => {
-              const handleClick = (e: React.MouseEvent) => {
-                e.preventDefault();
-                const el = document.getElementById("contact");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                try {
-                  window.dispatchEvent(new CustomEvent("cheluve:enquire", { detail: { product: p.name } }));
-                } catch {}
-                if (history.replaceState) history.replaceState(null, "", "#contact");
-              };
-              return (
-                <motion.a
-                  key={p.id}
-                  href="#contact"
-                  onClick={handleClick}
-                  data-product={p.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: (i % 4) * 0.06, ease: "easeOut" }}
+            {isLoading && Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="bg-card border border-border animate-pulse">
+                <div className="aspect-[4/5] bg-[color:var(--ivory)]" />
+                <div className="p-5 space-y-3">
+                  <div className="h-4 bg-[color:var(--ivory)]" />
+                  <div className="h-3 bg-[color:var(--ivory)] w-1/2 mx-auto" />
+                </div>
+              </div>
+            ))}
+            {!isLoading && products.map((p: ProductRow, i: number) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.5, delay: (i % 4) * 0.06, ease: "easeOut" }}
+              >
+                <Link
+                  to="/product/$slug"
+                  params={{ slug: p.slug }}
                   className="group block bg-card border border-border hover:border-[color:var(--gold)]/60 overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-25px_rgba(184,134,11,0.4)] will-change-transform"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--ivory)]">
                     <img
-                      src={p.image}
-                      alt={p.name}
+                      src={p.image_urls[0] || "/images/cheluve-logo.png"}
+                      alt={p.product_name}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-110"
                     />
+                    {p.featured && (
+                      <div className="absolute top-3 left-3 px-2.5 py-1 text-[9px] tracking-[0.3em] uppercase bg-[color:var(--gold)]/95 text-white">Featured</div>
+                    )}
                   </div>
                   <div className="p-5 text-center">
-                    <h4 className="font-display text-lg text-foreground leading-snug">{p.name}</h4>
-                    <p className="mt-2 text-base text-royal tracking-wide">{formatPrice(p.price)}</p>
+                    <h4 className="font-display text-lg text-foreground leading-snug">{p.product_name}</h4>
+                    <p className="mt-2 text-base text-royal tracking-wide">{formatPrice(Number(p.product_price))}</p>
+                    {p.rental_available && p.rental_price != null && (
+                      <p className="mt-1 text-[10px] tracking-[0.28em] uppercase text-foreground/55">Rent {formatPrice(Number(p.rental_price))}</p>
+                    )}
                   </div>
-                </motion.a>
-              );
-            })}
+                </Link>
+              </motion.div>
+            ))}
+            {!isLoading && products.length === 0 && (
+              <p className="col-span-full text-center text-foreground/55 italic">New pieces arriving soon.</p>
+            )}
           </div>
         </div>
       </div>
     </section>
   );
-
 }
 
 /* ===== RENTAL ===== */
