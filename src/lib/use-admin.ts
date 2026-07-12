@@ -52,13 +52,11 @@ export function useIsAdmin(userId: string | undefined) {
         return;
       }
 
-      // 2) Bootstrap: if signed in as the primary admin email, self-assign the role.
+      // 2) Bootstrap: if signed in as the primary admin email, self-assign via RPC.
       if (email === BOOTSTRAP_ADMIN_EMAIL) {
-        const { error: insertErr } = await supabase
-          .from("user_roles")
-          .insert({ user_id: userId, role: "admin" });
+        const { data: ok } = await supabase.rpc("ensure_bootstrap_admin");
         if (!cancelled) {
-          setIsAdmin(!insertErr || insertErr.code === "23505"); // unique violation = already exists
+          setIsAdmin(!!ok);
           setChecking(false);
         }
         return;
