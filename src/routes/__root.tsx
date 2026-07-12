@@ -157,6 +157,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fire initial pageview once gtag is available.
+    trackPageview(router.state.location.pathname + router.state.location.searchStr);
+    const unsub = router.subscribe("onResolved", ({ toLocation }) => {
+      trackPageview(toLocation.pathname + toLocation.searchStr);
+    });
+    return () => unsub();
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
