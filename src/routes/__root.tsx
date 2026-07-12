@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import "../lib/dev-auto-reload";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+import { GA_MEASUREMENT_ID, trackPageview } from "../lib/gtag";
 
 function NotFoundComponent() {
   return (
@@ -104,6 +105,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
+        src: `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`,
+        async: true,
+      },
+      {
+        children: `window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}window.gtag=gtag;gtag('js', new Date());gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: false });`,
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
@@ -149,6 +157,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Fire initial pageview once gtag is available.
+    trackPageview(router.state.location.pathname + router.state.location.searchStr);
+    const unsub = router.subscribe("onResolved", ({ toLocation }) => {
+      trackPageview(toLocation.pathname + toLocation.searchStr);
+    });
+    return () => unsub();
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>
