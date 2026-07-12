@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import "../lib/dev-auto-reload";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+import { GA_MEASUREMENT_ID, trackPageview } from "../lib/gtag";
 
 function NotFoundComponent() {
   return (
