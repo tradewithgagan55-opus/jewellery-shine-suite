@@ -532,7 +532,7 @@ function BannerPanel() {
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["site-settings"] });
 
-  const persist = async (patch: Record<string, unknown>) => {
+  const persist = async (patch: { banner_image_url?: string | null; banner_enabled?: boolean }) => {
     const { error } = await supabase.from("site_settings").update(patch).eq("id", true);
     if (error) { toast.error(error.message); return false; }
     invalidate();
