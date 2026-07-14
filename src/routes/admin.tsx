@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeOff, Loader2, Upload, X, Settings } from "lucide-react";
+import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeOff, Loader2, Upload, X, Settings, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthUser, useIsAdmin } from "@/lib/use-admin";
 import { useProducts, formatPrice, useSiteSettings, type ProductRow } from "@/lib/products-api";
@@ -190,6 +190,7 @@ function Dashboard() {
         <Tabs defaultValue="products">
           <TabsList>
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
+            <TabsTrigger value="banner"><ImageIcon className="w-4 h-4 mr-2" />Banner</TabsTrigger>
             <TabsTrigger value="settings"><Settings className="w-4 h-4 mr-2" />Site Settings</TabsTrigger>
           </TabsList>
 
@@ -239,10 +240,15 @@ function Dashboard() {
             )}
           </TabsContent>
 
+          <TabsContent value="banner" className="mt-6">
+            <BannerPanel />
+          </TabsContent>
+
           <TabsContent value="settings" className="mt-6">
             <SettingsPanel />
           </TabsContent>
         </Tabs>
+
       </main>
 
       {editing && (
