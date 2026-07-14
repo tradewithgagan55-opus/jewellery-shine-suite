@@ -3,9 +3,11 @@ import { AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import { LuxuryLoader, WhatsAppFAB } from "@/components/cheluve/primitives";
 import { Navbar } from "@/components/cheluve/Navbar";
+import { HeroBanner } from "@/components/cheluve/HeroBanner";
 import {
   Hero, Collections, Rental, About, WhyUs, Gallery, Testimonials, CTA, Footer,
 } from "@/components/cheluve/Sections";
+
 
 
 export const Route = createFileRoute("/")({
@@ -63,8 +65,10 @@ function Index() {
     <div className="relative">
       <AnimatePresence>{loading && <LuxuryLoader onDone={() => setLoading(false)} />}</AnimatePresence>
       <Navbar />
+      <HeroBanner />
       <main>
         <Hero />
+
         <Collections />
         <Rental />
         <About />

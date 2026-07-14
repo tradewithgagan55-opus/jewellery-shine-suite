@@ -76,6 +76,8 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          banner_enabled: boolean
+          banner_image_url: string | null
           business_name: string
           contact_email: string | null
           contact_location: string | null
@@ -88,6 +90,8 @@ export type Database = {
           whatsapp_number: string | null
         }
         Insert: {
+          banner_enabled?: boolean
+          banner_image_url?: string | null
           business_name?: string
           contact_email?: string | null
           contact_location?: string | null
@@ -100,6 +104,8 @@ export type Database = {
           whatsapp_number?: string | null
         }
         Update: {
+          banner_enabled?: boolean
+          banner_image_url?: string | null
           business_name?: string
           contact_email?: string | null
           contact_location?: string | null

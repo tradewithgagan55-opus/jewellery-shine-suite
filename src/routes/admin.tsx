@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeOff, Loader2, Upload, X, Settings } from "lucide-react";
+import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeOff, Loader2, Upload, X, Settings, Image as ImageIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthUser, useIsAdmin } from "@/lib/use-admin";
 import { useProducts, formatPrice, useSiteSettings, type ProductRow } from "@/lib/products-api";
@@ -190,6 +190,7 @@ function Dashboard() {
         <Tabs defaultValue="products">
           <TabsList>
             <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
+            <TabsTrigger value="banner"><ImageIcon className="w-4 h-4 mr-2" />Banner</TabsTrigger>
             <TabsTrigger value="settings"><Settings className="w-4 h-4 mr-2" />Site Settings</TabsTrigger>
           </TabsList>
 
@@ -239,10 +240,15 @@ function Dashboard() {
             )}
           </TabsContent>
 
+          <TabsContent value="banner" className="mt-6">
+            <BannerPanel />
+          </TabsContent>
+
           <TabsContent value="settings" className="mt-6">
             <SettingsPanel />
           </TabsContent>
         </Tabs>
+
       </main>
 
       {editing && (
@@ -509,6 +515,107 @@ function SettingsPanel() {
           </Button>
         </div>
       </div>
+    </Card>
+  );
+}
+
+function BannerPanel() {
+  const { data, isLoading } = useSiteSettings() as { data: any; isLoading: boolean };
+  const qc = useQueryClient();
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  if (isLoading || !data) return <Loader2 className="w-6 h-6 animate-spin text-royal" />;
+
+  const bannerUrl: string | null = data.banner_image_url ?? null;
+  const enabled: boolean = !!data.banner_enabled;
+
+  const invalidate = () => qc.invalidateQueries({ queryKey: ["site-settings"] });
+
+  const persist = async (patch: { banner_image_url?: string | null; banner_enabled?: boolean }) => {
+    const { error } = await supabase.from("site_settings").update(patch).eq("id", true);
+    if (error) { toast.error(error.message); return false; }
+    invalidate();
+    return true;
+  };
+
+  const onUpload = async (file: File | null | undefined) => {
+    if (!file) return;
+    const okTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    if (!okTypes.includes(file.type)) return toast.error("Use JPG, PNG or WEBP");
+    if (file.size > 5 * 1024 * 1024) return toast.error("Max file size is 5 MB");
+    setUploading(true);
+    try {
+      const ext = file.name.split(".").pop() || "jpg";
+      const path = `banners/${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from("product-images").upload(path, file, {
+        cacheControl: "3600",
+        upsert: false,
+        contentType: file.type,
+      });
+      if (error) throw error;
+      const { data: pub } = supabase.storage.from("product-images").getPublicUrl(path);
+      const ok = await persist({ banner_image_url: pub.publicUrl, banner_enabled: true });
+      if (ok) toast.success("Banner uploaded");
+    } catch (e: any) {
+      toast.error(e.message ?? "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const toggle = async (v: boolean) => {
+    setSaving(true);
+    await persist({ banner_enabled: v });
+    setSaving(false);
+  };
+
+  const remove = async () => {
+    setSaving(true);
+    await persist({ banner_image_url: null, banner_enabled: false });
+    setSaving(false);
+    toast.success("Banner removed");
+  };
+
+  return (
+    <Card className="p-6 max-w-4xl">
+      <div className="flex items-start justify-between gap-4 mb-6">
+        <div>
+          <h2 className="font-display text-2xl">Banner Management</h2>
+          <p className="text-sm text-foreground/60 mt-1">
+            Recommended: 1920 × 800 px (2.4:1). JPG, PNG or WEBP. Max 5 MB.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <Label htmlFor="banner-enabled" className="text-sm">Enabled</Label>
+          <Switch id="banner-enabled" checked={enabled} disabled={!bannerUrl || saving} onCheckedChange={toggle} />
+        </div>
+      </div>
+
+      <div className="border border-border rounded-md bg-[color:var(--ivory)] overflow-hidden aspect-[2.4/1] flex items-center justify-center">
+        {bannerUrl ? (
+          <img src={bannerUrl} alt="Current banner" className="w-full h-full object-cover object-center" />
+        ) : (
+          <p className="text-foreground/40 text-sm">No banner uploaded yet</p>
+        )}
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-3">
+        <label className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-md text-sm cursor-pointer hover:border-[color:var(--gold)]">
+          {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+          <span>{bannerUrl ? "Replace banner" : "Upload banner"}</span>
+          <input type="file" accept="image/jpeg,image/jpg,image/png,image/webp" hidden onChange={(e) => onUpload(e.target.files?.[0])} />
+        </label>
+        {bannerUrl && (
+          <Button variant="outline" onClick={remove} disabled={saving}>
+            <Trash2 className="w-4 h-4 mr-2" />Delete banner
+          </Button>
+        )}
+      </div>
+
+      {bannerUrl && (
+        <p className="mt-3 text-xs text-foreground/50 break-all">Current: {bannerUrl}</p>
+      )}
     </Card>
   );
 }
