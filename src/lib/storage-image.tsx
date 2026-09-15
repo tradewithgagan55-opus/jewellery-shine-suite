@@ -22,7 +22,10 @@ const signedCache = new Map<string, string>();
 export function useStorageImage(raw: string | undefined | null) {
   const [src, setSrc] = useState<string>(() => {
     if (!raw) return FALLBACK;
-    return signedCache.get(raw) ?? raw;
+    const cached = signedCache.get(raw);
+    if (cached) return cached;
+    // Storage objects need a signed URL; show the placeholder until it resolves.
+    return extractStoragePath(raw) ? FALLBACK : raw;
   });
 
   useEffect(() => {
