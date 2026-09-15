@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useProducts, formatPrice, type ProductRow } from "@/lib/products-api";
 import { Link } from "@tanstack/react-router";
+import { StorageImage } from "@/lib/storage-image";
 
 
 

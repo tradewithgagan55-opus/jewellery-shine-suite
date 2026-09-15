@@ -6,6 +6,7 @@ import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeO
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthUser, useIsAdmin } from "@/lib/use-admin";
 import { useProducts, formatPrice, useSiteSettings, type ProductRow } from "@/lib/products-api";
+import { StorageImage } from "@/lib/storage-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

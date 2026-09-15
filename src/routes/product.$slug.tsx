@@ -6,6 +6,7 @@ import { useProduct, formatPrice } from "@/lib/products-api";
 import { Navbar } from "@/components/cheluve/Navbar";
 import { WhatsAppFAB, Eyebrow, WHATSAPP_NUMBER } from "@/components/cheluve/primitives";
 import { Footer } from "@/components/cheluve/Sections";
+import { StorageImage, useStorageImage } from "@/lib/storage-image";
 
 export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => ({
