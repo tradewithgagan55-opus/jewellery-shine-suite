@@ -228,8 +228,8 @@ export function Collections() {
                   className="group block bg-card border border-border hover:border-[color:var(--gold)]/60 overflow-hidden transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-25px_rgba(184,134,11,0.4)] will-change-transform"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-[color:var(--ivory)]">
-                    <img
-                      src={p.image_urls[0] || "/images/cheluve-logo.png"}
+                    <StorageImage
+                      src={p.image_urls[0]}
                       alt={p.product_name}
                       loading="lazy"
                       decoding="async"
