@@ -44,7 +44,7 @@ export function useStorageImage(raw: string | undefined | null) {
       setSrc(raw);
       return;
     }
-    setSrc(raw);
+    setSrc(FALLBACK);
     supabase.storage
       .from(BUCKET)
       .createSignedUrl(path, TEN_YEARS)
