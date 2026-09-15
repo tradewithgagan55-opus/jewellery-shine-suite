@@ -29,6 +29,7 @@ function ProductDetail() {
   const { slug } = Route.useParams();
   const { data: product, isLoading } = useProduct(slug);
   const [idx, setIdx] = useState(0);
+  const mainSrc = useStorageImage(product?.image_urls?.[idx]);
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center text-foreground/60">Loading…</div>;
@@ -50,7 +51,7 @@ function ProductDetail() {
             <div className="relative aspect-[4/5] overflow-hidden bg-white border border-border">
               <motion.img
                 key={idx}
-                src={images[idx]}
+                src={mainSrc}
                 alt={product.product_name}
                 initial={{ opacity: 0, scale: 1.03 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -86,7 +87,7 @@ function ProductDetail() {
                       idx === i ? "border-[color:var(--gold)]" : "border-border"
                     }`}
                   >
-                    <img src={src} alt="" className="w-full h-full object-cover" />
+                    <StorageImage src={src} alt="" className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
