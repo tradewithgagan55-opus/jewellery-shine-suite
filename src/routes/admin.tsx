@@ -6,6 +6,7 @@ import { LogOut, Plus, Pencil, Trash2, Save, ArrowUp, ArrowDown, Star, Eye, EyeO
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthUser, useIsAdmin } from "@/lib/use-admin";
 import { useProducts, formatPrice, useSiteSettings, type ProductRow } from "@/lib/products-api";
+import { StorageImage } from "@/lib/storage-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -206,7 +207,7 @@ function Dashboard() {
               <div className="grid gap-3">
                 {products.map((p) => (
                   <Card key={p.id} className="p-4 flex items-center gap-4">
-                    <img src={p.image_urls[0] || "/images/cheluve-logo.png"} alt="" className="w-16 h-20 object-cover bg-[color:var(--ivory)] border border-border" />
+                    <StorageImage src={p.image_urls[0]} alt="" className="w-16 h-20 object-cover bg-[color:var(--ivory)] border border-border" />
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
                         <h3 className="font-display text-lg truncate">{p.product_name}</h3>
@@ -380,7 +381,7 @@ function ProductEditor({
             <div className="mt-2 grid grid-cols-4 gap-2">
               {form.image_urls.map((src, i) => (
                 <div key={i} className="relative aspect-square group">
-                  <img src={src} alt="" className="w-full h-full object-cover border border-border" />
+                  <StorageImage src={src} alt="" className="w-full h-full object-cover border border-border" />
                   <button type="button" onClick={() => removeImage(i)} className="absolute top-1 right-1 bg-black/60 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100">
                     <X className="w-3 h-3" />
                   </button>
