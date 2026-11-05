@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSiteSettings } from "@/lib/products-api";
 import { supabase } from "@/integrations/supabase/client";
+import { DeepavaliFireworks } from "@/components/cheluve/DeepavaliFireworks";
 
 const BUCKET = "product-images";
 
@@ -51,7 +52,7 @@ export function HeroBanner() {
 
   return (
     <section aria-label="Promotional banner" className="w-full bg-[color:var(--ivory)]">
-      <div className="w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         <img
           src={resolvedUrl}
           alt="Cheluve Creations promotional banner"
@@ -60,6 +61,7 @@ export function HeroBanner() {
           loading="eager"
           decoding="async"
         />
+        <DeepavaliFireworks />
       </div>
     </section>
   );
